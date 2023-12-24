@@ -31,10 +31,11 @@ class NewVisitorTest(unittest.TestCase):
         # press enter key, website displays
         # "1: Kupić pawie pióra" as to do list element
         inputbox.send_keys(Keys.ENTER)
-        table = self.browser_find_element(By.ID, 'id_list_table')
+        table = self.browser.find_element(By.ID, 'id_list_table')
         rows = table.find_elements(By.TAG_NAME, 'tr')
         self.assertTrue(
-            any(row.text == '1: Kupić pawie pióra' for row in rows)
+            any(row.text == '1: Kupić pawie pióra' for row in rows),
+            "New element not in the table"
         )
 
         self.fail('End of test')
