@@ -13,6 +13,13 @@ class NewVisitorTest(unittest.TestCase):
     def tearDown(self):
         self.browser.quit()
 
+    def check_for_row_in_list_table(self, row_text):
+        table = self.browser.find_element(By.ID, 'id_list_table')
+        rows = table.find_elements(By.TAG_NAME, 'tr')
+
+        self.assertIn(row_text, [row.text for row in rows])
+
+
     def test_can_start_a_list_app_and_retrieve_it_later(self):
         self.browser.get('http://localhost:8000')
 
@@ -33,19 +40,18 @@ class NewVisitorTest(unittest.TestCase):
         # "1: Kupić pawie pióra" as to do list element
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
-        table = self.browser.find_element(By.ID, 'id_list_table')
-        rows = table.find_elements(By.TAG_NAME, 'tr')
-        self.assertIn('1: Kupić pawie pióra', [row.text for row in rows])
+        self.check_for_row_in_list_table('1: Kupić pawie pióra')
 
+        # There is text field prompting to enter another task to do on the website
+        # enter: Użyć pawich piór do zrobienia przynęty
         inputbox = self.browser.find_element(By.ID, 'id_new_item')
         inputbox.send_keys('Użyć pawich piór do zrobienia przynęty')
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
 
-        table = self.browser.find_element(By.ID, 'id_list_table')
-        rows = table.find_elements(By.TAG_NAME, 'tr')
-        self.assertIn('1: Kupić pawie pióra', [row.text for row in rows])
-        self.assertIn('2: Użyć pawich piór do zrobienia przynęty', [row.text for row in rows])
+        # page was uploaded and displays 2 elements on to do list
+        self.check_for_row_in_list_table('1: Kupić pawie pióra')
+        self.check_for_row_in_list_table('2: Użyć pawich piór do zrobienia przynęty')
 
         self.fail('End of test')
 
