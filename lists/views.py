@@ -4,4 +4,8 @@ from django.http import HttpResponse
 
 
 def home_page(request):
-    return render(request, 'home.html')
+    # render szuka w katralogu templates pliku 'home.html'
+    # aplikacja która korzysta z szablonu musi być dodan ado pliku settings.py
+    return render(request, 'home.html', {
+        'new_item_text': request.POST.get('item_text', '')
+    })

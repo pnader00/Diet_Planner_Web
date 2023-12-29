@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import unittest
+import time
 
 
 class NewVisitorTest(unittest.TestCase):
@@ -31,12 +32,20 @@ class NewVisitorTest(unittest.TestCase):
         # press enter key, website displays
         # "1: Kupić pawie pióra" as to do list element
         inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
         table = self.browser.find_element(By.ID, 'id_list_table')
         rows = table.find_elements(By.TAG_NAME, 'tr')
-        self.assertTrue(
-            any(row.text == '1: Kupić pawie pióra' for row in rows),
-            "New element not in the table"
-        )
+        self.assertIn('1: Kupić pawie pióra', [row.text for row in rows])
+
+        inputbox = self.browser.find_element(By.ID, 'id_new_item')
+        inputbox.send_keys('Użyć pawich piór do zrobienia przynęty')
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
+
+        table = self.browser.find_element(By.ID, 'id_list_table')
+        rows = table.find_elements(By.TAG_NAME, 'tr')
+        self.assertIn('1: Kupić pawie pióra', [row.text for row in rows])
+        self.assertIn('2: Użyć pawich piór do zrobienia przynęty', [row.text for row in rows])
 
         self.fail('End of test')
 
