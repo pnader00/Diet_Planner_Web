@@ -40,6 +40,8 @@ class NewVisitorTest(LiveServerTestCase):
         # "1: Kupić pawie pióra" as to do list element
         inputbox.send_keys(Keys.ENTER)
         time.sleep(1)
+        edith_list_url = self.browser.current_url
+        self.assertRegex(edith_list_url, '/lists/.+')
         self.check_for_row_in_list_table('1: Kupić pawie pióra')
 
         # There is text field prompting to enter another task to do on the website
@@ -52,5 +54,32 @@ class NewVisitorTest(LiveServerTestCase):
         # page was uploaded and displays 2 elements on to do list
         self.check_for_row_in_list_table('1: Kupić pawie pióra')
         self.check_for_row_in_list_table('2: Użyć pawich piór do zrobienia przynęty')
+
+        # new user Franek visits page
+
+        ## use new browser session to be sure that no previous information will be revealed eg by cookies
+        self.browser.quit()
+        self.browser = webdriver.Firefox()
+
+        # Franek can't find any traces of previous list
+        self.browser.get(self.live_server_url)
+        page_text = self.browser.find_element(By.TAG_NAME, 'body').text
+        self.assertNotIn('Kupić pawie pióra', page_text)
+        self.assertNotIn('zrobienia przynęty', page_text)
+
+        # Franek creates new list by entering new element
+        inputbox = self.browser.find_element(By.ID, 'id_new_item')
+        inputbox.send_keys('Kupić mleko')
+        inputbox.send_keys(Keys.ENTER)
+
+        # Franek gets unique url adres to his list
+        francis_list_url = self.browser.current_url
+        self.assertRegex(francis_list_url, '/lists/.+')
+        self.assertNotEqual(francis_list_url, edith_list_url)
+
+        # Again there is no trace of previous list
+        page_text = self.browser.find_element(By.TAG_NAME, 'body').text
+        self.assertNotIn('Kupić pawie pióra', page_text)
+        self.assertIn('Kupić mleko', page_text)
 
         self.fail('End of test')
