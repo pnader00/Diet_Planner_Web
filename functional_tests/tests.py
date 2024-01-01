@@ -1,3 +1,4 @@
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -5,7 +6,7 @@ import unittest
 import time
 
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
@@ -19,9 +20,8 @@ class NewVisitorTest(unittest.TestCase):
 
         self.assertIn(row_text, [row.text for row in rows])
 
-
     def test_can_start_a_list_app_and_retrieve_it_later(self):
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
 
         # web title and header contain word "List"
         self.assertIn('List', self.browser.title)
@@ -54,7 +54,3 @@ class NewVisitorTest(unittest.TestCase):
         self.check_for_row_in_list_table('2: Użyć pawich piór do zrobienia przynęty')
 
         self.fail('End of test')
-
-
-if __name__ == '__main__':
-    unittest.main(warnings='ignore')

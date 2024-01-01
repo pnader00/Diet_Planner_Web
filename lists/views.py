@@ -1,17 +1,15 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpRequest
+from django.shortcuts import redirect, render
+from django.http import HttpResponse
+from lists.models import Item
 # Create your views here.
 
 
 def home_page(request):
     # render szuka w katralogu templates pliku 'home.html'
     # aplikacja która korzysta z szablonu musi być dodan ado pliku settings.py
-    return render(request, 'home.html', {
-        'new_item_text': request.POST.get('item_text', '')
-    })
+    if request.method == 'POST':
+        Item.objects.create(text=request.POST['item_text'])
+        return redirect('/')
 
-
-if __name__ == '__main__':
-    request = HttpRequest()
-    # response = home_page(request)
-    print("ff")
+    items = Item.objects.all()
+    return render(request, 'home.html', {'items': items})
