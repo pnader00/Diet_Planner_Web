@@ -19,6 +19,7 @@ from django.urls import path, re_path, include
 from lists import views as lists_views
 
 urlpatterns = [
-    re_path('^$', lists_views.home_page, name='home')
+    re_path('^$', lists_views.home_page, name='home'),
+    re_path(r'^lists/the-only-list-in-the-world/$', lists_views.view_list, name='view_list'),
     # path('admin/', admin.site.urls),
 ]
