@@ -85,3 +85,25 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertIn('Kupić mleko', page_text)
 
         self.fail('End of test')
+
+    def test_layout_and_styling(self):
+        # go to main page
+        self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024, 768)
+
+        # text field centered
+        inputbox = self.browser.find_element(By.ID, 'id_new_item')
+        self.assertAlmostEqual(
+            inputbox.location['x'] + inputbox.size['width'] / 2,
+            512,
+            delta=10
+        )
+
+        # new list page text field centered
+        inputbox.send_keys('testing\n')
+        inputbox = self.browser.find_element(By.ID, 'id_new_item')
+        self.assertAlmostEqual(
+            inputbox.location['x'] + inputbox.size['width'] / 2,
+            512,
+            delta=10
+        )
