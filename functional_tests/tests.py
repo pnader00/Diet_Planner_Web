@@ -4,12 +4,17 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import unittest
 import time
+import os
 
 
 class NewVisitorTest(StaticLiveServerTestCase):
+
     def setUp(self):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
+        test_server = os.environ.get('TEST_SERVER')
+        if test_server:
+            self.live_server_url = 'http://' + test_server
 
     def tearDown(self):
         self.browser.quit()
