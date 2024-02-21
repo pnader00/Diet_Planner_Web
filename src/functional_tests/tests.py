@@ -5,16 +5,25 @@ from selenium.webdriver.common.by import By
 import unittest
 import time
 import os
+import sys
 
 
 class NewVisitorTest(StaticLiveServerTestCase):
+    @classmethod
+    def setUpClass(cls):
+        for arg in sys.argv:
+            if 'liveserver' in arg:
+                cls.server_url = 'http://' + arg.split('=')[1]
+                return
+        super().setUpClass()
+        cls.server_url = cls.live_server_url
 
     def setUp(self):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
-        test_server = os.environ.get('TEST_SERVER')
-        if test_server:
-            self.live_server_url = 'http://' + test_server
+        # test_server = os.environ.get('TEST_SERVER')
+        # if test_server:
+        #     self.live_server_url = 'http://' + test_server
 
     def tearDown(self):
         self.browser.quit()
@@ -26,7 +35,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertIn(row_text, [row.text for row in rows])
 
     def test_can_start_a_list_app_and_retrieve_it_later(self):
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.server_url)
 
         # web title and header contain word "List"
         self.assertIn('List', self.browser.title)
@@ -63,12 +72,12 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         # new user Franek visits page
 
-        ## use new browser session to be sure that no previous information will be revealed eg by cookies
+        # use new browser session to be sure that no previous information will be revealed eg by cookies
         self.browser.quit()
         self.browser = webdriver.Firefox()
 
         # Franek can't find any traces of previous list
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.server_url)
         page_text = self.browser.find_element(By.TAG_NAME, 'body').text
         self.assertNotIn('Kupić pawie pióra', page_text)
         self.assertNotIn('zrobienia przynęty', page_text)
@@ -91,7 +100,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
     def test_layout_and_styling(self):
         # go to main page
-        self.browser.get(self.live_server_url)
+        self.browser.get(self.server_url)
         self.browser.set_window_size(1024, 768)
 
         # text field centered
@@ -110,3 +119,4 @@ class NewVisitorTest(StaticLiveServerTestCase):
             512,
             delta=10
         )
+
