@@ -12,9 +12,11 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
-        test_server = os.environ.get('TEST_SERVER')
-        if test_server:
-            self.live_server_url = 'http://' + test_server
+        # test_server = os.environ.get('TEST_SERVER')
+        # if test_server:
+        #     self.live_server_url = 'http://' + test_server
+        self.live_server_url = 'http://dietplanner-staging.kesug.com'
+
 
     def tearDown(self):
         self.browser.quit()

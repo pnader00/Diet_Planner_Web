@@ -1,0 +1,32 @@
+Przygotowanie nowej witryny
+===========================
+
+## Wymagane pakiety:
+*nginx
+*Python 3
+*git
+*pip
+*virtualienv
+*gunicorn
+
+## Konfiguracja wirtualnych hostów w Nginx
+
+*plik nginx.template.conf
+*SITENAME należy zastąpić odpowiednią nazwą np. dietplanner.kesug.com
+
+##Autostart programem systemd
+
+*plik gunicorn.template.service
+*SITENAME należy zastąpić odpowiednią nazwą np. dietplanner.kesug.com
+
+## Struktura katalogów
+
+Przujmujemy założenie o istnieniu konta użytkownila w postaci /home/użytkownik
+
+/home/użutkownik
+	sites
+		SITENAME
+			database
+			source
+			static
+			virtualenv

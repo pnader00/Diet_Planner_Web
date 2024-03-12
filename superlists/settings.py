@@ -27,8 +27,9 @@ SECRET_KEY = 'django-insecure-1p_u%#!1t3&7mbev&lc^rk(-pr00))(2r4p*y&b5gg^51bmw8(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['http://dietplanner-staging.kesug.com', 'localhost']
 
+CSRF_TRUSTED_ORIGINS = ['http://13.49.240.246']
 
 # Application definition
 
@@ -79,7 +80,7 @@ WSGI_APPLICATION = 'superlists.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, '../database/db.sqlite3'),   #BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -119,7 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../static'))
+STATIC_ROOT = os.path.join(BASE_DIR, '../static')   #os.path.abspath(os.path.join(BASE_DIR, '../static'))
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
