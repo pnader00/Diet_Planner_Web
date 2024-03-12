@@ -18,7 +18,6 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.live_server_url = 'http://dietplanner-staging.kesug.com'
 
 
-
     def tearDown(self):
         self.browser.quit()
 
