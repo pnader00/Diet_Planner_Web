@@ -27,9 +27,9 @@ SECRET_KEY = 'django-insecure-1p_u%#!1t3&7mbev&lc^rk(-pr00))(2r4p*y&b5gg^51bmw8(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['http://dietplanner-staging.kesug.com', 'localhost']
+ALLOWED_HOSTS = []
 
-CSRF_TRUSTED_ORIGINS = ['http://13.49.240.246']
+CSRF_TRUSTED_ORIGINS = []
 
 # Application definition
 
